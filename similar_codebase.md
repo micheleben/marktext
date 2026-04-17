@@ -72,6 +72,24 @@ flatpak install flathub org.gnome.gitlab.somas.Apostrophe
 
 Note: math support is partial — block `$$...$$` works but inline `$...$` is unreliable.
 
+## Ghostwriter — Known Limitations
+
+### No synchronized scrolling (confirmed missing as of 2026)
+
+**Symptom:** When editing near the bottom of a document, the HTML preview pane scrolls back to the top. Manually scrolling one pane does not scroll the other.
+
+**Status:** Never implemented in any released version, including the latest KDE-versioned releases (`25.12.3`, released 2026-03-05). Two open GitHub discussions confirm the feature is still requested and unresolved:
+- [Synchronized scrolling · Discussion #662](https://github.com/KDE/ghostwriter/discussions/662)
+- [Synchronize the HTML-Preview · Discussion #858](https://github.com/KDE/ghostwriter/discussions/858)
+
+**Why it's hard:** The markdown source and the rendered HTML occupy different amounts of vertical space in a way that is not consistent — a single heading in markdown may expand to a large block in the preview, making a simple line-ratio scroll mapping inaccurate. The discussions acknowledge this as a non-trivial design problem.
+
+**Contrast with MarkText:** MarkText uses a WYSIWYG inline model — there is no separate preview pane, so the sync scrolling problem does not exist by design.
+
+**Potential contribution:** This is an open and explicitly requested feature in Ghostwriter. A viable approach used by other editors (e.g. Typora, VS Code Markdown preview) is to inject anchor IDs into rendered HTML elements and match them to source line numbers. Worth investigating Ghostwriter's C++/Qt preview rendering pipeline if contributing there.
+
+---
+
 ## Known MarkText Bugs Worth Investigating
 
 ### `$$...$$` display math not rendering correctly (v0.17.1)
